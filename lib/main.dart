@@ -1,15 +1,17 @@
+import 'package:enova_test/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:http/http.dart' as http;
 import 'controllers/api_info.controller.dart';
 import 'controllers/check_token.controller.dart';
 import 'controllers/dynamic_link.controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Get.put(ApiInfoController());
-  Get.put(DynamicLinkController());
-  Get.put(CheckTokenController());
+  Get.put(ApiService(client: http.Client()));
+  Get.put(ApiInfoController(apiService: Get.find()));
+  Get.put(DynamicLinkController(apiService: Get.find()));
+  Get.put(CheckTokenController(apiService: Get.find()));
   runApp(MyApp());
 }
 
@@ -258,7 +260,7 @@ class ApiInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetX<ApiInfoController>(
-      init: ApiInfoController(),
+      init: ApiInfoController(apiService: Get.find()),
       builder: (controller) => _SectionTemplate(
         buttonText: 'Fetch API Info',
         onPressed: controller.fetchApiInfo,
@@ -355,7 +357,7 @@ class DynamicLinkSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetX<DynamicLinkController>(
-      init: DynamicLinkController(),  // Initialize the DynamicLinkController
+      init: DynamicLinkController(apiService: Get.find()),  // Initialize the DynamicLinkController
       builder: (controller) {
         print("TheStatus value is ${controller.status.value}");
         return _SectionTemplate(
@@ -378,7 +380,7 @@ class CheckTokenSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetX<CheckTokenController>(
-      init: CheckTokenController(),  // Initialize the CheckTokenController
+      init: CheckTokenController(apiService: Get.find()),  // Initialize the CheckTokenController
       builder: (controller) {
         print("TheTokenStatus value is ${controller.status.value}");
         return _SectionTemplate(

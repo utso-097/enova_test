@@ -2,38 +2,45 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../models/dynamic_info_response.model.dart';
+import '../services/api_service.dart';
 import 'base.controller.dart';
 
 class DynamicLinkController extends BaseController {
+  final ApiService apiService;  // Inject ApiService
+
+  // This holds the response
   final Rx<DynamicLinkResponse?> dynamicLinkResponse = Rx<DynamicLinkResponse?>(null);
+
+  // Constructor to inject the ApiService
+  DynamicLinkController({required this.apiService});
 
   // Method to fetch dynamic link data
   Future<void> fetchDynamicLinkData() async {
     await executeWithTimeout(() async {
-      final String url = 'https://mm.getenova.com/api/v2/download-info';
-        // Prepare the body data for the POST request
-        final Map<String, dynamic> body = {
-          "campaign": "download",
-          "os": "android",
-          "phone": "Samsung",
-        };
+      final String url = 'download-info';
 
-        // Make the POST request
-        final response = await http.post(
-          Uri.parse(url),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(body),
-        );
+      // Prepare the body data for the POST request
+      final Map<String, dynamic> body = {
+        "campaign": "download",
+        "os": "android",
+        "phone": "Samsung",
+      };
 
-        if (response.statusCode == 200) {
-          final data = jsonDecode(response.body);
-          dynamicLinkResponse.value = DynamicLinkResponse.fromJson(data);
+      try {
+        // Call ApiService's post method
+        await apiService.post(
+          url,
+          body,
+              (data) => DynamicLinkResponse.fromJson(data), // Map response to DynamicLinkResponse
+        ).then((response) {
+          // Set the response
+          dynamicLinkResponse.value = response;
           status.value = 'Message: ${dynamicLinkResponse.value?.message}';
-        } else {
-          throw Exception('Failed to fetch API info');
-        }
+        });
+      } catch (e) {
+        print("Error occurred while fetching dynamic link data: $e");
+        status.value = 'Error: $e';
+      }
     });
   }
 }
