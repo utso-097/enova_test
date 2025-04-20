@@ -65,7 +65,7 @@ class ApiService {
       print(e);
 
       // This will navigate back to the previous page
-      Get.back();
+      // Get.back();
 
       throw _handleError(e);
     }
@@ -110,7 +110,7 @@ class ApiService {
       print(e);
 
       // This will navigate back to the previous page
-      Get.back();
+      // Get.back();
 
       throw _handleError(e);
     }
@@ -178,7 +178,7 @@ class ApiService {
       // if (decodedBody is Map<String, dynamic>) {
       //   return fromJson(decodedBody);
       // } else {
-        Get.back();
+      //   Get.back();
         print("default");
         throw ApiException('Unexpected error: ${response.body}');
     // }

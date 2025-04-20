@@ -1,3 +1,6 @@
+import 'package:enova_test/screens/new_api.screen.dart';
+import 'package:enova_test/screens/old_api.screen.dart';
+import 'package:enova_test/screens/telephony.screen.dart';
 import 'package:enova_test/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -46,19 +49,19 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Enova API Test'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              // Get.find<CountryController>().reset();
-              Get.find<ApiInfoController>().reset();
-              Get.find<DynamicLinkController>().reset();
-              Get.find<CheckTokenController>().reset();
-              // Get.find<LocalInfoController>().reset();
-              // Get.find<CloudflareController>().reset();
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.refresh),
+        //     onPressed: () {
+        //       // Get.find<CountryController>().reset();
+        //       Get.find<ApiInfoController>().reset();
+        //       Get.find<DynamicLinkController>().reset();
+        //       Get.find<CheckTokenController>().reset();
+        //       // Get.find<LocalInfoController>().reset();
+        //       // Get.find<CloudflareController>().reset();
+        //     },
+        //   ),
+        // ],
       ),
       body: const Body(),
     );
@@ -70,16 +73,35 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+    return Container(
+      width: double.infinity,
       child: Column(
-        children: const [
-          // InfoCardSection(title: 'Location Info', child: CountrySection()),
-          InfoCardSection(title: 'API Info', child: ApiInfoSection(title: "API Info",)),
-          InfoCardSection(title: 'Dynamic Link Data', child: DynamicLinkSection(title: "Dynamic Link Info")),
-          InfoCardSection(title: "Check Token Data", child: CheckTokenSection(title: "Check Token Info")),
-          // InfoCardSection(title: 'Local Info', child: LocalInfoSection()),
-          // InfoCardSection(title: 'Cloudflare Check', child: CloudflareSection()),
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children:  [
+          ElevatedButton(
+            onPressed: () {
+              // Navigate to the Old API page
+              Get.to(() => const OldApiScreen());
+            },
+            child: const Text('Go to Old API'),
+          ),
+          SizedBox(height: 10,),
+          ElevatedButton(
+            onPressed: () {
+              // Navigate to the New API page
+              Get.to(() => const NewApiScreen());
+            },
+            child: const Text('Go to New API'),
+          ),
+          SizedBox(height: 10,),
+          ElevatedButton(
+            onPressed: () {
+              // Navigate to the New API page
+              Get.to(() => const TelephonyScreen());
+            },
+            child: const Text('Go to Telephony Screen'),
+          ),
         ],
       ),
     );
